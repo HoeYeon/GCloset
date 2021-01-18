@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.1'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id 'groovy'
 }
 
 group = 'com.gcloset'
@@ -16,16 +17,26 @@ configurations {
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
+	testCompile group: 'junit', name: 'junit', version: '4.12'
 	implementation 'org.springframework.boot:spring-boot-starter-groovy-templates'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile 'mysql:mysql-connector-java'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	runtime('com.h2database:h2')
+
+	implementation 'org.codehaus.groovy:groovy:3.0.5'
+	testImplementation('org.spockframework:spock-core:2.0-M3-groovy-3.0')
+	testImplementation('org.spockframework:spock-spring:2.0-M3-groovy-3.0')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 test {

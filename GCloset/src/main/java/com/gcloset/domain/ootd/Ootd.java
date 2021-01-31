@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -17,33 +19,17 @@ public class Ootd extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "outer_id")
-    private Cloth outer;
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "top_id")
-    private Cloth top;
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "bottom_id")
-    private Cloth bottom;
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "shoes_id")
-    private Cloth shoes;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "cloths_id")
+    private List<Cloth> cloths = new ArrayList<>();
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id")
     private User user;
 
-    //Todo have to change more elegant
     @Builder
-    public Ootd(User user, Cloth outer, Cloth top, Cloth bottom, Cloth shoes) {
+    public Ootd(User user, List<Cloth> cloths) {
         this.user = user;
-        this.outer = outer;
-        this.top = top;
-        this.bottom = bottom;
-        this.shoes = shoes;
+        this.cloths.addAll(cloths);
     }
 }

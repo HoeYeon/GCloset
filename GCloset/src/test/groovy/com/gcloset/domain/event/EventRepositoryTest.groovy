@@ -25,9 +25,14 @@ class EventRepositoryTest extends Specification {
         def cloth2 = new Cloth("shirts", user)
         def cloth3 = new Cloth("Cap", user2)
 
-        def ootd1 = new Ootd(user, cloth1, cloth2, cloth2, cloth2)
-        def ootd2 = new Ootd(user, cloth1, cloth2, cloth2, cloth2)
-        def ootd3 = new Ootd(user2, cloth3, cloth2, cloth2, cloth2)
+        def cloths = new ArrayList<Cloth>();
+        cloths.add(cloth1);
+        cloths.add(cloth2);
+        cloths.add(cloth3);
+
+        def ootd1 = new Ootd(user, cloths)
+        def ootd2 = new Ootd(user,  cloths)
+        def ootd3 = new Ootd(user2, cloths)
 
         def event = new Event("ootd1", friend.name, ootd1, user)
         def event2 = new Event("test2", friend2.name, ootd2, user2)

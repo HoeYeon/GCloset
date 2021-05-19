@@ -21,6 +21,10 @@ repositories {
 }
 
 dependencies {
+	compile('org.springframework.security:spring-security-oauth2-client')
+	compile('org.springframework.security:spring-security-oauth2-jose')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	implementation 'org.springframework.boot:spring-boot-starter-groovy-templates'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

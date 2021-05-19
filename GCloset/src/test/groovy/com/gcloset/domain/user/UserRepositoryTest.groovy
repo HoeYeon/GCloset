@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @DataJpaTest
 class UserRepositoryTest extends Specification {
     def email = "test@gmail.com"

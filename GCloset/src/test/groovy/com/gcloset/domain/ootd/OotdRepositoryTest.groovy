@@ -1,11 +1,13 @@
 package com.gcloset.domain.ootd
 
 import com.gcloset.domain.cloth.Cloth
-import com.gcloset.domain.friend.Friend
+import com.gcloset.domain.cloth.ClothRepository
 import com.gcloset.domain.user.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import spock.lang.Specification
+
+import java.time.LocalDateTime
 
 @DataJpaTest
 class OotdRepositoryTest extends Specification {
@@ -13,29 +15,39 @@ class OotdRepositoryTest extends Specification {
     @Autowired
     OotdRepository ootdRepository;
 
+    @Autowired
+    ClothRepository clothRepository;
+
     def "FindByUser"() {
         given:
-        def user = new User("user1", "a", "test@gmail.com", "123")
-        def user2 = new User("user2", "a", "test@gmail.com", "123")
+        def user = User.builder()
+                .first_name("user1")
+                .last_name("a")
+                .email("test@gmail.com")
+                .password("123")
+                .build()
 
-        def cloth1 = new Cloth("jean", user)
-        def cloth2 = new Cloth("shirts", user)
-        def cloth3 = new Cloth("Cap", user2)
+        ["jeans", "shirts", "Cap"].each { type ->
+            clothRepository.save(Cloth.builder()
+                    .clothType(type)
+                    .user(user)
+                    .build())
+        }
 
-        def cloths = new ArrayList<Cloth>();
-        cloths.add(cloth1);
-        cloths.add(cloth2);
-        cloths.add(cloth3);
-
-        def ootd1 = new Ootd(user, cloths)
-        ootdRepository.save(ootd1)
+        def cloths = clothRepository.findByUser(user)
+        ootdRepository.save(Ootd.builder()
+                .user(user)
+                .cloths(cloths)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build())
         when:
         def re = ootdRepository.findByUser(user)
 
         then:
         re.get(0).cloths.size() == 3
-        re.get(0).cloths.get(0) == cloth1
-        re.get(0).cloths.get(1) == cloth2
-        re.get(0).cloths.get(2) == cloth3
+        re.get(0).cloths.get(0).clothType == "jeans"
+        re.get(0).cloths.get(1).clothType == "shirts"
+        re.get(0).cloths.get(2).clothType == "Cap"
     }
 }

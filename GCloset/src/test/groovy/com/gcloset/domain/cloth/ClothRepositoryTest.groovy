@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 @DataJpaTest
 class ClothRepositoryTest extends Specification {
 
@@ -13,10 +15,10 @@ class ClothRepositoryTest extends Specification {
 
     def "check Many to One"(){
         given:
-        def user = new User("s","a","test@gmail.com","123")
+        def user = new User("s","a","test@gmail.com","123", LocalDateTime.now(),LocalDateTime.now())
 
-        def cloth1 = new Cloth("jean",user)
-        def cloth2 = new Cloth("shirts",user)
+        def cloth1 = new Cloth("jean",user, LocalDateTime.now(),LocalDateTime.now())
+        def cloth2 = new Cloth("shirts",user, LocalDateTime.now(),LocalDateTime.now())
         clothRepository.save(cloth1)
         clothRepository.save(cloth2)
 

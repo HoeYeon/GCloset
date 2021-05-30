@@ -5,12 +5,13 @@ import com.gcloset.web.domain.cloth.ClothService;
 import com.gcloset.web.domain.user.User;
 import com.gcloset.web.annotation.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class LoginController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class LoginController {
     }
 
     @GetMapping("/loginSuccess")
-    public List<Cloth> loginComplete(@SocialUser User user){
-        return clothService.findClothList(user);
+    public String loginComplete(){
+        return "loginSuccess";
     }
 }

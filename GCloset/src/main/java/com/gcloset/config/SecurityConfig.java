@@ -1,6 +1,8 @@
 package com.gcloset.config;
 
+import com.gcloset.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,35 +27,38 @@ import static com.gcloset.web.enums.SocialType.GOOGLE;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         http
                 .authorizeRequests()
                 .antMatchers("/", "/oauth2/**", "/login/**", "/css/**", "/images/**", "/js/**", "/console/**").permitAll()
-                .antMatchers("/google").hasAuthority(GOOGLE.getRoleType())
                 .anyRequest().authenticated()
                     .and()
                 .oauth2Login()
-                .defaultSuccessUrl("/loginSuccess")
-                .failureUrl("/loginFailure")
-                    .and()
-                .headers().frameOptions().disable()
-                    .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                    .and()
-                .formLogin()
-                .successForwardUrl("/hello")
-                    .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                    .and()
-                .addFilterBefore(filter, CsrfFilter.class)
-                .csrf().disable();
+                    .defaultSuccessUrl("/loginSuccess")
+                    .failureUrl("/loginFailure")
+                        .and()
+                    .headers().frameOptions().disable()
+                        .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                        .and()
+                    .formLogin()
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
+                    .successForwardUrl("/hello")
+                        .and()
+                    .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID")
+                    .invalidateHttpSession(true)
+                        .and()
+                    .addFilterBefore(filter, CsrfFilter.class)
+                    .csrf().disable();
     }
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {

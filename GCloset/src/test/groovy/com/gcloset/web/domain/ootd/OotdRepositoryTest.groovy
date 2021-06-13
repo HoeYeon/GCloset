@@ -3,23 +3,20 @@ package com.gcloset.web.domain.ootd
 import com.gcloset.web.domain.cloth.Cloth
 import com.gcloset.web.domain.cloth.ClothRepository
 import com.gcloset.web.domain.user.User
-import com.gcloset.web.resolver.UserArgumentResolver
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import spock.lang.Specification
 
-import java.time.LocalDateTime
-
 @DataJpaTest
 class OotdRepositoryTest extends Specification {
-    @MockBean
-    private UserArgumentResolver userArgumentResolver;
-    @Autowired
-    OotdRepository ootdRepository;
 
     @Autowired
-    ClothRepository clothRepository;
+    OotdRepository ootdRepository
+
+    @Autowired
+    ClothRepository clothRepository
 
     def "FindByUser"() {
         given:

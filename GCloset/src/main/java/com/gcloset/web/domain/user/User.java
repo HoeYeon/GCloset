@@ -1,14 +1,17 @@
 package com.gcloset.web.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gcloset.web.domain.BaseTimeEntity;
+import com.gcloset.web.enums.AuthProvider;
 import com.gcloset.web.enums.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @NoArgsConstructor
 @Entity
@@ -30,20 +33,25 @@ public class User extends BaseTimeEntity {
     @Column
     private String principal;
 
-    @Column
+    @JsonIgnore
+    private String password;
+
     @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private AuthProvider provider;
+
+    private String providerId;
 
     @Builder
     public User(String name,
                 String email,
                 String password,
                 String principal,
-                SocialType socialType) {
+                AuthProvider provider) {
         this.name = name;
         this.email = email;
+        this.password = password;
         this.principal = principal;
-        this.socialType = socialType;
+        this.provider = provider;
     }
 
     public User update(String name) {

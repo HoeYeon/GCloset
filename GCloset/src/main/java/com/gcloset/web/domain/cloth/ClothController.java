@@ -1,9 +1,8 @@
 package com.gcloset.web.domain.cloth;
 
-import com.gcloset.web.annotation.SocialUser;
+import com.gcloset.security.CurrentUser;
 import com.gcloset.web.domain.cloth.dto.AddClothDto;
 import com.gcloset.web.domain.user.User;
-import com.gcloset.web.domain.cloth.dto.ClothDto;
 import com.gcloset.web.enums.ClothType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +22,12 @@ public class ClothController {
     ClothService clothService;
 
     @GetMapping("/api/v1/clothList")
-    public List<Cloth> findClothList(@SocialUser User user){
+    public List<Cloth> findClothList(User user){
         return clothService.findClothList(user);
     }
 
     @PostMapping("/api/v1/clothList")
-    public Boolean addCloth(@SocialUser User user, @RequestBody AddClothDto addClothDto){
+    public Boolean addCloth(@CurrentUser User user, @RequestBody AddClothDto addClothDto){
         List<ClothType> clothTypeList = addClothDto.getClothDtoList().stream()
                 .map(cloth -> fromString(cloth.getClothType()))
                 .collect(Collectors.toList());

@@ -3,15 +3,10 @@ package com.gcloset.web.domain.cloth
 import com.gcloset.web.domain.user.User
 import com.gcloset.web.enums.ClothType
 import com.gcloset.web.enums.SocialType
-import com.gcloset.web.resolver.UserArgumentResolver
-import org.springframework.boot.test.mock.mockito.MockBean
 import spock.lang.Specification
 
 class ClothServiceTest extends Specification {
 
-    // 인증 무시용
-    @MockBean
-    UserArgumentResolver userArgumentResolver
 
     def clothRepository = Mock(ClothRepository.class)
     def sut = new ClothService(clothRepository)
